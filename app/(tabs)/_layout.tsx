@@ -3,22 +3,13 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import { View, TouchableOpacity, StyleSheet, Platform } from "react-native";
 
-import Colors from "@/constants/Colors";
-import { useColorScheme } from "@/components/useColorScheme";
-
 // Custom tab bar icon component
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
   size?: number;
 }) {
-  return (
-    <FontAwesome
-      size={props.size || 28}
-      style={{ marginBottom: -3 }}
-      {...props}
-    />
-  );
+  return <FontAwesome size={props.size || 28} {...props} />;
 }
 
 // Custom tab bar component
@@ -26,7 +17,6 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
   return (
     <View style={styles.tabBar}>
       {state.routes.map((route: any, index: number) => {
-        const { options } = descriptors[route.key];
         const isFocused = state.index === index;
         const isAddButton = route.name === "add";
 
@@ -46,7 +36,7 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
             size = 32;
             break;
           case "messages":
-            iconName = isFocused ? "comment" : "comment-o";
+            iconName = isFocused ? "bell" : "bell-o";
             break;
           case "profile":
             iconName = isFocused ? "user" : "user-o";
@@ -89,8 +79,6 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       tabBar={(props) => <CustomTabBar {...props} />}
@@ -137,28 +125,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#000",
     paddingBottom: Platform.OS === "ios" ? 34 : 20,
-    paddingTop: 15,
-    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingHorizontal: 16,
     borderTopWidth: 0.5,
-    borderTopColor: "#333",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   tabItem: {
-    flex: 1,
+    width: "20%",
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
   },
   addButton: {
     backgroundColor: "#fff",
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     borderRadius: 25,
-    marginTop: -10,
+    marginTop: -40,
     shadowColor: "#fff",
     shadowOffset: {
       width: 0,
       height: 2,
     },
+    marginLeft: 10,
+    marginRight: 10,
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,

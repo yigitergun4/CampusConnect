@@ -1,24 +1,12 @@
 import React from "react";
 import {
   View,
-  Text,
-  Image,
   StyleSheet,
-  TouchableOpacity,
-  Dimensions,
   StatusBar,
-  ImageSourcePropType,
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import SocialPost from "../../components/SocialPost";
-
-const { width, height } = Dimensions.get("window");
-
-interface ProfileImageProps {
-  source: ImageSourcePropType;
-  style?: any;
-}
+import SocialPost from "@/components/SocialPost";
 
 export default function HomeScreen() {
   const handleCheckPress = () => {
