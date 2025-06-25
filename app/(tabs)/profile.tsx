@@ -13,15 +13,18 @@ import {
   Alert,
 } from "react-native";
 import { useDatas } from "@/context/DatasContext";
+import { useLogin } from "@/context/LoginContext";
 import { router } from "expo-router";
 
 const ProfileScreen = () => {
   const { profileData } = useDatas();
+  const { logoutUser } = useLogin();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = () => {
     setShowLogoutModal(false);
     // Logout işlemi
+    logoutUser();
     router.replace("../signin");
   };
 
@@ -267,7 +270,7 @@ const styles = StyleSheet.create({
   },
   connectButton: {
     flex: 1,
-    backgroundColor: "#4169E1",
+    backgroundColor: "#093C71",
     paddingVertical: 15,
     borderRadius: 25,
     alignItems: "center",

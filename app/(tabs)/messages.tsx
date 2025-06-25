@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   joinButton: {
-    backgroundColor: "#007aff",
+    backgroundColor: "#093C71",
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 20,

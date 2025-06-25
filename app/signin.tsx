@@ -12,21 +12,34 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useLogin } from "@/context/LoginContext";
 
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const { loginUser } = useLogin();
 
   const handleLogin = () => {
-    // Login logic burada implement edilecek
-    console.log("Login pressed", { email, password });
-    // Şimdilik direkt tab ekranına yönlendir
-    router.replace("/(tabs)");
+    setError("");
+
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    const success = loginUser(email, password);
+
+    if (success) {
+      router.replace("/(tabs)");
+    } else {
+      setError("Invalid email or password");
+    }
   };
 
   const handleRegister = () => {
-    // Register logic burada implement edilecek
-    console.log("Register pressed");
+    router.replace("/register");
   };
 
   return (
@@ -51,7 +64,10 @@ const SignInScreen = () => {
               placeholder="Email"
               placeholderTextColor="#999"
               value={email}
-              onChangeText={setEmail}
+              onChangeText={(text) => {
+                setEmail(text);
+                if (error) setError("");
+              }}
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
@@ -63,11 +79,17 @@ const SignInScreen = () => {
               placeholder="Password"
               placeholderTextColor="#999"
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(text) => {
+                setPassword(text);
+                if (error) setError("");
+              }}
               secureTextEntry
               autoCapitalize="none"
               autoCorrect={false}
             />
+
+            {/* Error Message */}
+            {error && <Text style={styles.errorText}>{error}</Text>}
 
             {/* Login Button */}
             <TouchableOpacity
@@ -161,6 +183,13 @@ const styles = StyleSheet.create({
     color: "#1a1a1a",
     fontSize: 16,
     fontWeight: "500",
+  },
+  errorText: {
+    color: "#dc3545",
+    fontSize: 14,
+    textAlign: "center",
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
 
