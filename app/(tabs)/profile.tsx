@@ -1,5 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,118 +9,176 @@ import {
   Image,
   SafeAreaView,
   StatusBar,
+  Modal,
+  Alert,
 } from "react-native";
 import { useDatas } from "@/context/DatasContext";
 import { router } from "expo-router";
 
 const ProfileScreen = () => {
   const { profileData } = useDatas();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const handleLogout = () => {
+    setShowLogoutModal(false);
+    // Logout işlemi
+    router.replace("../signin");
+  };
+
+  const handleCancelLogout = () => {
+    setShowLogoutModal(false);
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
+    <>
+      {/* Logout Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showLogoutModal}
+        onRequestClose={handleCancelLogout}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Logout</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to logout?
+            </Text>
 
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <FontAwesome name="arrow-left" size={20} color="white" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Profile</Text>
-        <View style={styles.placeholder} />
-      </View>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={handleCancelLogout}
+              >
+                <Text style={styles.cancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Profil Bilgileri */}
-        <View style={styles.profileSection}>
-          <Image
-            source={{ uri: useDatas().postData.user.profileImage }}
-            style={styles.avatar}
-          />
-          <Text style={styles.name}>{useDatas().postData.user.name}</Text>
-          <Text style={styles.title}>{useDatas().postData.user.location}</Text>
-        </View>
-
-        {/* Butonlar */}
-        <View style={styles.buttonSection}>
-          <TouchableOpacity style={styles.chatsButton}>
-            <Text style={styles.chatsButtonText}>Chats</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.connectButton}>
-            <Text style={styles.connectButtonText}>Connect</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* İstatistikler */}
-        <View style={styles.statsSection}>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{profileData.stats.events}</Text>
-            <Text style={styles.statLabel}>Events</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{profileData.stats.followers}</Text>
-            <Text style={styles.statLabel}>Followers</Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{profileData.stats.following}</Text>
-            <Text style={styles.statLabel}>Following</Text>
+              <TouchableOpacity
+                style={styles.logoutButton}
+                onPress={handleLogout}
+              >
+                <Text style={styles.logoutButtonText}>Logout</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+      </Modal>
 
-        {/* Tab Menu */}
-        <View style={styles.tabMenu}>
-          <TouchableOpacity style={[styles.tab, styles.activeTab]}>
-            <Text style={[styles.tabText, styles.activeTabText]}>Profile</Text>
+      <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
+
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => router.back()}
+          >
+            <FontAwesome name="arrow-left" size={20} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tab}>
-            <Text style={styles.tabText}>Messages</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tab}>
-            <Text style={styles.tabText}>Interests</Text>
-          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Profile</Text>
+          <View style={styles.placeholder} />
         </View>
 
-        {/* Galeri */}
-        <View style={styles.gallery}>
-          <View style={styles.galleryRow}>
-            <TouchableOpacity style={[styles.galleryItem, styles.largeItem]}>
+        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          {/* Profil Bilgileri */}
+          <View style={styles.profileSection}>
+            <TouchableOpacity onPress={() => setShowLogoutModal(true)}>
               <Image
-                source={{ uri: profileData.galleryImages[0] }}
-                style={styles.galleryImage}
+                source={{ uri: useDatas().postData.user.profileImage }}
+                style={styles.avatar}
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.galleryItem,
-                styles.smallItem,
-                { backgroundColor: "#E6A98A" },
-              ]}
-            >
-              <Image
-                source={{ uri: profileData.galleryImages[1] }}
-                style={styles.galleryImage}
-              />
+            <Text style={styles.name}>{useDatas().postData.user.name}</Text>
+            <Text style={styles.title}>
+              {useDatas().postData.user.location}
+            </Text>
+          </View>
+
+          {/* Butonlar */}
+          <View style={styles.buttonSection}>
+            <TouchableOpacity style={styles.chatsButton}>
+              <Text style={styles.chatsButtonText}>Chats</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.connectButton}>
+              <Text style={styles.connectButtonText}>Connect</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.galleryRow}>
-            <TouchableOpacity style={[styles.galleryItem, styles.mediumItem]}>
-              <Image
-                source={{ uri: profileData.galleryImages[2] }}
-                style={styles.galleryImage}
-              />
+
+          {/* İstatistikler */}
+          <View style={styles.statsSection}>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>{profileData.stats.events}</Text>
+              <Text style={styles.statLabel}>Events</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>
+                {profileData.stats.followers}
+              </Text>
+              <Text style={styles.statLabel}>Followers</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={styles.statNumber}>
+                {profileData.stats.following}
+              </Text>
+              <Text style={styles.statLabel}>Following</Text>
+            </View>
+          </View>
+
+          {/* Tab Menu */}
+          <View style={styles.tabMenu}>
+            <TouchableOpacity style={[styles.tab, styles.activeTab]}>
+              <Text style={[styles.tabText, styles.activeTabText]}>
+                Profile
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.galleryItem, styles.mediumItem]}>
-              <Image
-                source={{ uri: profileData.galleryImages[3] }}
-                style={styles.galleryImage}
-              />
+            <TouchableOpacity style={styles.tab}>
+              <Text style={styles.tabText}>Messages</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.tab}>
+              <Text style={styles.tabText}>Interests</Text>
             </TouchableOpacity>
           </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+
+          {/* Galeri */}
+          <View style={styles.gallery}>
+            <View style={styles.galleryRow}>
+              <TouchableOpacity style={[styles.galleryItem, styles.largeItem]}>
+                <Image
+                  source={{ uri: profileData.galleryImages[0] }}
+                  style={styles.galleryImage}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.galleryItem,
+                  styles.smallItem,
+                  { backgroundColor: "#E6A98A" },
+                ]}
+              >
+                <Image
+                  source={{ uri: profileData.galleryImages[1] }}
+                  style={styles.galleryImage}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.galleryRow}>
+              <TouchableOpacity style={[styles.galleryItem, styles.mediumItem]}>
+                <Image
+                  source={{ uri: profileData.galleryImages[2] }}
+                  style={styles.galleryImage}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.galleryItem, styles.mediumItem]}>
+                <Image
+                  source={{ uri: profileData.galleryImages[3] }}
+                  style={styles.galleryImage}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -295,6 +353,64 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "#1a1a1a",
+    borderRadius: 20,
+    padding: 25,
+    width: "80%",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#333",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 10,
+  },
+  modalMessage: {
+    fontSize: 16,
+    color: "#ccc",
+    textAlign: "center",
+    marginBottom: 25,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    gap: 15,
+    width: "100%",
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: "#333",
+    borderRadius: 15,
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  logoutButton: {
+    flex: 1,
+    backgroundColor: "#dc3545",
+    borderRadius: 15,
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  logoutButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 
