@@ -17,15 +17,15 @@ import { router } from "expo-router";
 import { useLogin } from "@/context/LoginContext";
 
 const RegisterScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [gender, setGender] = useState<"male" | "female" | "other" | "">("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const { registerUser, isEmailTaken } = useLogin();
 
-  const validateForm = () => {
+  const validateForm: () => boolean = () => {
     const newErrors: { [key: string]: string } = {};
 
     // Email validation
@@ -60,7 +60,7 @@ const RegisterScreen = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleRegister = () => {
+  const handleRegister: () => void = () => {
     if (!validateForm()) {
       return;
     }
@@ -90,7 +90,7 @@ const RegisterScreen = () => {
     }
   };
 
-  const handleGoToSignIn = () => {
+  const handleGoToSignIn: () => void = () => {
     router.replace("/signin");
   };
 
@@ -110,7 +110,6 @@ const RegisterScreen = () => {
                 <Text style={styles.title}>Create Account</Text>
               </View>
             </View>
-
             {/* Form */}
             <View style={styles.form}>
               {/* Email Input */}
@@ -134,7 +133,6 @@ const RegisterScreen = () => {
                   <Text style={styles.errorText}>{errors.email}</Text>
                 )}
               </View>
-
               {/* Password Input */}
               <View style={styles.inputContainer}>
                 <TextInput
@@ -156,7 +154,6 @@ const RegisterScreen = () => {
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
               </View>
-
               {/* Confirm Password Input */}
               <View style={styles.inputContainer}>
                 <TextInput
@@ -181,7 +178,6 @@ const RegisterScreen = () => {
                   <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 )}
               </View>
-
               {/* Gender Selection */}
               <View style={styles.inputContainer}>
                 <Text style={styles.genderLabel}>Gender</Text>
@@ -212,7 +208,6 @@ const RegisterScreen = () => {
                       Male
                     </Text>
                   </TouchableOpacity>
-
                   <TouchableOpacity
                     style={[
                       styles.genderButton,
@@ -239,7 +234,6 @@ const RegisterScreen = () => {
                       Female
                     </Text>
                   </TouchableOpacity>
-
                   <TouchableOpacity
                     style={[
                       styles.genderButton,
@@ -272,7 +266,6 @@ const RegisterScreen = () => {
                   <Text style={styles.errorText}>{errors.gender}</Text>
                 )}
               </View>
-
               {/* Register Button */}
               <TouchableOpacity
                 style={styles.registerButton}
@@ -281,7 +274,6 @@ const RegisterScreen = () => {
               >
                 <Text style={styles.registerButtonText}>Create Account</Text>
               </TouchableOpacity>
-
               {/* Back to Login */}
               <TouchableOpacity
                 style={styles.loginButton}

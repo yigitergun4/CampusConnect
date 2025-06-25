@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ title, onBookmarkPress }) => {
     <View style={styles.header}>
       <Text style={styles.headerTitle}>{title}</Text>
       <TouchableOpacity onPress={onBookmarkPress} style={styles.bookmarkButton}>
-        <Ionicons name="chatbubble-outline" size={24} color="#fff" />
+        <Ionicons name="notifications-outline" size={24} color="#fff" />
       </TouchableOpacity>
     </View>
   );
