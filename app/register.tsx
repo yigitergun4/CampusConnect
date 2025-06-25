@@ -101,7 +101,7 @@ const RegisterScreen = () => {
         style={styles.keyboardContainer}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.scrollContent}>
           <View style={styles.content}>
             {/* Header */}
             <View style={styles.header}>
@@ -294,7 +294,7 @@ const RegisterScreen = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
