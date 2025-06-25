@@ -2,6 +2,10 @@ import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import { View, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { useLogin } from "@/context/LoginContext";
+import { useRouter } from "expo-router";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Custom tab bar icon component
 function TabBarIcon(props: {
@@ -79,6 +83,27 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 }
 
 export default function TabLayout() {
+  const { isLoggedIn } = useLogin();
+  const router = useRouter();
+
+    useEffect(() => {
+      const checkUser = async () => {
+        try {
+          const storedUser = await AsyncStorage.getItem("user");
+
+          if (!storedUser) {
+            router.replace("/signin");
+
+          }
+        } catch (err) {
+          console.error("Error checking user:", err);
+    
+        }
+      }
+
+      checkUser();
+    }, []);
+
   return (
     <Tabs
       tabBar={(props) => <CustomTabBar {...props} />}

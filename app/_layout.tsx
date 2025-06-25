@@ -7,9 +7,10 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColorScheme } from "@/components/useColorScheme";
 import { DatasProvider } from "@/context/DatasContext";
 import { LoginProvider } from "@/context/LoginContext";
@@ -53,17 +54,48 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const [initialRoute, setInitialRoute] = useState<"signin" | "(tabs)" | undefined>(undefined);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const storedUser = await AsyncStorage.getItem("user");
+
+        if (storedUser) {
+          const parsed = JSON.parse(storedUser);
+          if (parsed?.email) {
+            setInitialRoute("(tabs)");
+          } else {
+            setInitialRoute("signin");
+          }
+        } else {
+          setInitialRoute("signin");
+        }
+      } catch (err) {
+        console.error("Error parsing user:", err);
+        setInitialRoute("signin");
+      }
+    };
+
+    checkUser();
+  }, []);
+
+  // Stack sadece initialRoute ayarlandığında gösterilsin
+  if (!initialRoute) {
+    return null; // ya da loading spinner
+  }
+
   return (
     <LoginProvider>
       <DatasProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="signin" options={{ headerShown: false }} />
-            <Stack.Screen name="register" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <Stack
+            screenOptions={{ headerShown: false }}
+            initialRouteName={initialRoute}
+          >
+            <Stack.Screen name="signin" />
+            <Stack.Screen name="register" />
+            <Stack.Screen name="(tabs)" />
           </Stack>
         </ThemeProvider>
       </DatasProvider>

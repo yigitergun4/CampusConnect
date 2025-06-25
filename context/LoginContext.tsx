@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Type definitions
 interface User {
@@ -26,7 +33,7 @@ const LoginContext = createContext<LoginContextType | undefined>(undefined);
 
 export const useLogin = () => {
   const context = useContext(LoginContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useLogin must be used within a LoginProvider");
   }
   return context;
@@ -41,16 +48,42 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Load users & session from AsyncStorage
+  useEffect(() => {
+    const loadFromStorage = async () => {
+      try {
+        const usersData = await AsyncStorage.getItem("users");
+        const userData = await AsyncStorage.getItem("user");
+
+        if (usersData) {
+          const parsedUsers = JSON.parse(usersData);
+          setUsers(parsedUsers);
+        }
+
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          setCurrentUser(parsedUser);
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
+        console.error("Failed to load from storage", err);
+      }
+    };
+
+    loadFromStorage();
+  }, []);
+
+  const saveUsersToStorage = async (userList: User[]) => {
+    await AsyncStorage.setItem("users", JSON.stringify(userList));
+  };
+
   const registerUser = (
     email: string,
     password: string,
     gender: "male" | "female" | "other"
   ): boolean => {
-    // Check if email already exists
-    if (
-      users.some((user) => user.email.toLowerCase() === email.toLowerCase())
-    ) {
-      return false; // Email already taken
+    if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
+      return false;
     }
 
     const newUser: User = {
@@ -60,32 +93,41 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({ children }) => {
       registeredAt: new Date(),
     };
 
-    setUsers((prevUsers) => [...prevUsers, newUser]);
-    return true; // Registration successful
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    saveUsersToStorage(updatedUsers);
+
+    setCurrentUser(newUser);
+    setIsLoggedIn(true);
+    AsyncStorage.setItem("user", JSON.stringify(newUser));
+    return true;
   };
 
   const loginUser = (email: string, password: string): boolean => {
-    const user = users.find(
+    const matchedUser = users.find(
       (u) =>
         u.email.toLowerCase() === email.toLowerCase() && u.password === password
     );
 
-    if (user) {
-      setCurrentUser(user);
+    if (matchedUser) {
+      setCurrentUser(matchedUser);
       setIsLoggedIn(true);
+      AsyncStorage.setItem("user", JSON.stringify(matchedUser));
       return true;
     }
+
     return false;
   };
 
   const logoutUser = () => {
     setCurrentUser(null);
     setIsLoggedIn(false);
+    AsyncStorage.removeItem("user");
   };
 
   const isEmailTaken = (email: string): boolean => {
     return users.some(
-      (user) => user.email.toLowerCase() === email.toLowerCase()
+      (u) => u.email.toLowerCase() === email.toLowerCase()
     );
   };
 
@@ -100,7 +142,9 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({ children }) => {
   };
 
   return (
-    <LoginContext.Provider value={value}>{children}</LoginContext.Provider>
+    <LoginContext.Provider value={value}>
+      {children}
+    </LoginContext.Provider>
   );
 };
 

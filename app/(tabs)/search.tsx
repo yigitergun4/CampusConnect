@@ -37,6 +37,7 @@ interface PostCardProps {
   };
   isLiked: boolean;
   onLikePress: () => void;
+  onPress: () => void;
 }
 
 // ============ HEADER COMPONENT ============
@@ -82,9 +83,10 @@ const PostCard: React.FC<PostCardProps> = ({
   author,
   isLiked,
   onLikePress,
+  onPress,
 }) => {
   return (
-    <TouchableOpacity style={styles.postCard}>
+    <TouchableOpacity style={styles.postCard} onPress={onPress}> 
       <Image
         source={{ uri: image }}
         style={styles.postImage}
@@ -95,10 +97,7 @@ const PostCard: React.FC<PostCardProps> = ({
         <Text style={styles.postTitle}>{title}</Text>
         <View style={styles.cardFooter}>
           <View style={styles.authorInfo}>
-            <Image
-              source={{ uri: author.avatar }}
-              style={styles.authorAvatar}
-            />
+            <Image source={{ uri: author.avatar }} style={styles.authorAvatar} />
             <Text style={styles.authorName}>{author.name}</Text>
           </View>
           <TouchableOpacity onPress={onLikePress} style={styles.likeButton}>
@@ -131,6 +130,7 @@ const SearchScreen: React.FC = () => {
       },
       isLiked: false,
       onLikePress: () => handleLikePress("1"),
+      onPress: () => router.push("/detail/1"),
     },
     {
       id: "2",
@@ -144,6 +144,7 @@ const SearchScreen: React.FC = () => {
       },
       isLiked: false,
       onLikePress: () => handleLikePress("2"),
+      onPress: () => router.push("/detail/2"),
     },
     {
       id: "3",
@@ -157,6 +158,7 @@ const SearchScreen: React.FC = () => {
       },
       isLiked: false,
       onLikePress: () => handleLikePress("3"),
+      onPress: () => router.push("/detail/3"),
     },
     {
       id: "4",
@@ -170,6 +172,9 @@ const SearchScreen: React.FC = () => {
       },
       isLiked: false,
       onLikePress: () => handleLikePress("4"),
+      onPress: () => {
+        console.log("Post 4 pressed");
+      },
     },
   ]);
 
@@ -229,7 +234,10 @@ const SearchScreen: React.FC = () => {
 
             return (
               <View key={post.id} style={styles.postWrapper}>
-                <PostCard {...postWithHandler} />
+                <PostCard 
+                {...postWithHandler} 
+                onPress={() => router.push(`/detail/${post.id}`)}
+                />
               </View>
             );
           })}
