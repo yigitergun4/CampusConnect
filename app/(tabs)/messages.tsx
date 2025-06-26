@@ -13,6 +13,20 @@ import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useDatas } from "@/context/DatasContext";
 
+// Asset mapping
+const getImageSource = (imagePath: string) => {
+  switch (imagePath) {
+    case "@/assets/images/woman-profile.png":
+      return require("@/assets/images/woman-profile.png");
+    case "@/assets/images/man-profile.png":
+      return require("@/assets/images/man-profile.png");
+    case "@/assets/images/enterprise-profile.png":
+      return require("@/assets/images/enterprise-profile.png");
+    default:
+      return { uri: imagePath };
+  }
+};
+
 interface NotificationCardProps {
   image: string;
   title: string;
@@ -28,7 +42,11 @@ const NotificationCard = ({
 }: NotificationCardProps) => (
   <View style={styles.notificationCard}>
     <View style={styles.left}>
-      <Image source={{ uri: image }} style={styles.avatar} />
+      <Image
+        source={getImageSource(image)}
+        style={styles.avatar}
+        resizeMode="contain"
+      />
       <View>
         <Text style={styles.name}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
@@ -44,7 +62,6 @@ const MessagesScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#121212" />
-
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
@@ -53,7 +70,6 @@ const MessagesScreen = () => {
         <Text style={styles.headerText}>Notifications</Text>
         <FontAwesome name="sliders" size={20} color="white" />
       </View>
-
       <ScrollView>
         {/* Today's Updates */}
         <Text style={styles.sectionTitle}>Today's updates</Text>
@@ -94,7 +110,6 @@ const MessagesScreen = () => {
               description={notification.description}
             />
           ))}
-
         {/* Recent Activity */}
         <Text style={styles.sectionTitle}>Recent activity</Text>
         {notifications

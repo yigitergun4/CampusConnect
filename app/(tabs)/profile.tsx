@@ -19,7 +19,14 @@ const ProfileScreen = () => {
   const { profileData } = useDatas();
   const { logoutUser } = useLogin();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
+  const getImageSource = (imagePath: string) => {
+    switch (imagePath) {
+      case "@/assets/images/woman-profile.png":
+        return require("@/assets/images/woman-profile.png");
+      case "@/assets/images/man-profile.png":
+        return require("@/assets/images/man-profile.png");
+    }
+  };
   const handleLogout = () => {
     setShowLogoutModal(false);
     // Logout işlemi
@@ -65,10 +72,8 @@ const ProfileScreen = () => {
           </View>
         </View>
       </Modal>
-
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#1a1a1a" />
-
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity
@@ -80,13 +85,12 @@ const ProfileScreen = () => {
           <Text style={styles.headerTitle}>Profile</Text>
           <View style={styles.placeholder} />
         </View>
-
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
           {/* Profil Bilgileri */}
           <View style={styles.profileSection}>
             <TouchableOpacity onPress={() => setShowLogoutModal(true)}>
               <Image
-                source={{ uri: useDatas().postData.user.profileImage }}
+                source={getImageSource(useDatas().postData.user.profileImage)}
                 style={styles.avatar}
               />
             </TouchableOpacity>

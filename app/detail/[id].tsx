@@ -2,19 +2,22 @@
 import mockPosts from "@/data/mock_posts";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { View, Text, StyleSheet, Image, ScrollView, Linking, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Linking,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-
-
-
-
 
 const DetailScreen = () => {
   const { id } = useLocalSearchParams();
   const post = mockPosts[id as string];
 
-  if (!post) return <Text style={styles.notFound}>İçerik bulunamadı.</Text>;
+  if (!post) return <Text style={styles.notFound}>Content not found.</Text>;
 
   const openLink = (url: string) => {
     Linking.openURL(url).catch((err) => console.error("Link error:", err));
@@ -37,77 +40,143 @@ const DetailScreen = () => {
         <View style={styles.card}>
           {post.eventTypeID === "event" ? (
             <>
-              <Text style={styles.item}><Text style={styles.label}>Etkinlik Türü:</Text> {post.eventType}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Kategori:</Text> {post.eventCategory}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Tarih:</Text> {post.date} {post.time}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Yer:</Text> {post.location}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Katılımcılar:</Text> {post.attendees}/{post.maxAttendees}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Etkinlik Süresi:</Text> {post.eventDuration}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Organizatör:</Text> {post.eventOrganizer}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Ücretsiz:</Text> {post.isFree ? "Evet" : "Hayır"}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Online:</Text> {post.isOnline ? "Evet" : "Hayır"}</Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Event Type:</Text> {post.eventType}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Category:</Text> {post.eventCategory}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Date:</Text> {post.date} {post.time}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Location:</Text> {post.location}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Participants:</Text> {post.attendees}
+                /{post.maxAttendees}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Event Duration:</Text>{" "}
+                {post.eventDuration}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Organizer:</Text>{" "}
+                {post.eventOrganizer}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Free:</Text>{" "}
+                {post.isFree ? "Yes" : "No"}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Online:</Text>{" "}
+                {post.isOnline ? "Yes" : "No"}
+              </Text>
             </>
           ) : post.eventTypeID === "sale" ? (
             <>
-              <Text style={styles.item}><Text style={styles.label}>Kategori:</Text> {post.category}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Alt Kategori:</Text> {post.subCategory}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Durum:</Text> {post.condition}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Fiyat:</Text> {post.price}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Pazarlık:</Text> {post.isNegotiable ? "Evet" : "Hayır"}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Stok:</Text> {post.isAvailable ? "Mevcut" : "Satıldı"}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Lokasyon:</Text> {post.location}</Text>
               <Text style={styles.item}>
-                <Text style={styles.label}>İletişim:</Text> {post.contactInfo.phone} / {post.contactInfo.email}
+                <Text style={styles.label}>Category:</Text> {post.category}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Sub Category:</Text>{" "}
+                {post.subCategory}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Condition:</Text> {post.condition}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Price:</Text> {post.price}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Negotiable:</Text>{" "}
+                {post.isNegotiable ? "Yes" : "No"}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Stock:</Text>{" "}
+                {post.isAvailable ? "Available" : "Sold"}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Location:</Text> {post.location}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Contact:</Text>{" "}
+                {post?.contactInfo?.phone} / {post?.contactInfo?.email}
               </Text>
             </>
           ) : post.eventTypeID === "flatmate" ? (
             <>
-              <Text style={styles.item}><Text style={styles.label}>İçerik Türü:</Text> {post.eventType}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Kategori:</Text> {post.eventCategory}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Ev Durumu:</Text> {post.condition}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Kira:</Text> {post.price}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Pazarlık:</Text> {post.isNegotiable ? "Evet" : "Hayır"}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Uygunluk:</Text> {post.isAvailable ? "Mevcut" : "Dolu"}</Text>
-              <Text style={styles.item}><Text style={styles.label}>Lokasyon:</Text> {post.location}</Text>
               <Text style={styles.item}>
-                <Text style={styles.label}>İletişim:</Text> {post.contactInfo.phone} / {post.contactInfo.email}
+                <Text style={styles.label}>Content Type:</Text> {post.eventType}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Category:</Text> {post.eventCategory}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>House Condition:</Text>{" "}
+                {post.condition}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Rent:</Text> {post.price}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Negotiable:</Text>{" "}
+                {post.isNegotiable ? "Yes" : "No"}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Availability:</Text>{" "}
+                {post.isAvailable ? "Available" : "Full"}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Location:</Text> {post.location}
+              </Text>
+              <Text style={styles.item}>
+                <Text style={styles.label}>Contact:</Text>{" "}
+                {post?.contactInfo?.phone} / {post?.contactInfo?.email}
               </Text>
             </>
           ) : (
-          <Text style={styles.item}>İçerik türü tanımlı değil.</Text>
-          )
-          }
-
+            <Text style={styles.item}>Content type not defined.</Text>
+          )}
           {/* Etiketler */}
         </View>
-
         {/* Açıklama */}
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>Açıklama</Text>
+          <Text style={styles.sectionTitle}>Description</Text>
           <Text style={styles.description}>
-            {post.eventTypeID === "event" ? post.eventDescription : post.description}
+            {post.eventTypeID === "event"
+              ? post.eventDescription
+              : post.description}
           </Text>
         </View>
-
         {/* Link */}
         {post.eventTypeID === "event" ? (
           <View style={styles.linkRow}>
-            <Text style={styles.link} onPress={() => openLink(post.registrationLink)}>
-              Kayıt Linki
+            <Text
+              style={styles.link}
+              onPress={() => openLink(post?.registrationLink || "")}
+            >
+              Registration Link
             </Text>
-            <TouchableOpacity style={styles.registerButton} onPress={() => {
-              // Uygulama içi kayıt işlemi
-              console.log("Uygulama içi kayıt tetiklendi.");
-            }}>
-              <Text style={styles.registerButtonText}>Uygulama Üzerinden Kayıt Ol</Text>
+            <TouchableOpacity
+              style={styles.registerButton}
+              onPress={() => {
+                // Uygulama içi kayıt işlemi
+                console.log("In-app registration triggered.");
+              }}
+            >
+              <Text style={styles.registerButtonText}>Register via App</Text>
             </TouchableOpacity>
           </View>
         ) : (
-          <TouchableOpacity style={styles.messageButton} onPress={() => {
-            // Mesaj atma işlemi
-            console.log("Satıcıya mesaj atılıyor...");
-          }}>
-            <Text style={styles.messageButtonText}>Mesaj At</Text>
+          <TouchableOpacity
+            style={styles.messageButton}
+            onPress={() => {
+              // Mesaj atma işlemi
+              console.log("Sending message to seller...");
+            }}
+          >
+            <Text style={styles.messageButtonText}>Send Message</Text>
           </TouchableOpacity>
         )}
       </ScrollView>

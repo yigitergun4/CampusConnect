@@ -67,8 +67,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
     user: {
       name: "Aslı Ünlü",
       location: "Marmara University",
-      profileImage:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face",
+      profileImage: "@/assets/images/woman-profile.png",
     },
     images: {
       mainImage:
@@ -85,8 +84,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
   const [profileData, setProfileData] = useState<ProfileData>({
     name: "Aslı Ünlü",
     title: "Student at Marmara University",
-    avatar:
-      "https://images.unsplash.com/photo-1494790108755-2616b332c217?w=150&h=150&fit=crop&crop=face",
+    avatar: "@/assets/images/woman-profile.png",
     stats: {
       events: 23,
       followers: 52,
@@ -104,8 +102,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
   const [notifications, setNotifications] = useState<NotificationData[]>([
     {
       id: "1",
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b332c217?w=150&h=150&fit=crop&crop=face",
+      image: "@/assets/images/woman-profile.png",
       title: "asli.unlu",
       description: "new event posted",
       type: "update",
@@ -114,8 +111,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
     },
     {
       id: "2",
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b332c217?w=150&h=150&fit=crop&crop=face",
+      image: "@/assets/images/woman-profile.png",
       title: "sureyya.erat",
       description: "joined the event",
       type: "update",
@@ -124,8 +120,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
     },
     {
       id: "3",
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b332c217?w=150&h=150&fit=crop&crop=face",
+      image: "@/assets/images/enterprise-profile.png",
       title: "BWL 21",
       description: "asked a question",
       type: "event",
@@ -133,8 +128,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
     },
     {
       id: "4",
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b332c217?w=150&h=150&fit=crop&crop=face",
+      image: "@/assets/images/enterprise-profile.png",
       title: "BWL 21",
       description: "shared a study material",
       type: "event",
@@ -142,8 +136,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
     },
     {
       id: "5",
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b332c217?w=150&h=150&fit=crop&crop=face",
+      image: "@/assets/images/man-profile.png",
       title: "yigitergun",
       description: "liked your event",
       type: "activity",
@@ -151,8 +144,7 @@ export const DatasProvider: React.FC<DatasProviderProps> = ({ children }) => {
     },
     {
       id: "6",
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b332c217?w=150&h=150&fit=crop&crop=face",
+      image: "@/assets/images/man-profile.png",
       title: "yigitergun",
       description: "commented on your post",
       type: "activity",
