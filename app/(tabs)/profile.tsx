@@ -10,7 +10,6 @@ import {
   SafeAreaView,
   StatusBar,
   Modal,
-  Alert,
 } from "react-native";
 import { useDatas } from "@/context/DatasContext";
 import { useLogin } from "@/context/LoginContext";

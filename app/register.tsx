@@ -9,7 +9,6 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
   Alert,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
